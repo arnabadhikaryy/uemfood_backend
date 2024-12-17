@@ -30,7 +30,7 @@ async function login(req, res) {
 
         // Set the token in the response cookie
         res.cookie('token', token, { 
-          maxAge: 60 * 60 * 1000,
+          maxAge: 60 * 60 * 24 * 7,
           sameSite: 'None'
         });
 
