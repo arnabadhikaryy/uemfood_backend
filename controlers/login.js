@@ -26,10 +26,13 @@ async function login(req, res) {
           img_url:response.imageURL
         }, process.env.JWT_SECRET);
 
-        console.log('Token is', token);
+        //console.log('Token is', token);
 
         // Set the token in the response cookie
-        res.cookie('token', token, { httpOnly: false,  maxAge: 60 * 60 * 1000 });
+        res.cookie('token', token, { 
+          maxAge: 60 * 60 * 1000,
+          sameSite: 'None'
+        });
 
         // Send response with user data
         return res.send({
