@@ -29,15 +29,16 @@ async function login(req, res) {
         //console.log('Token is', token);
 
         // Set the token in the response cookie
-        res.cookie('token', token, { 
-          maxAge: 60 * 60 * 24 * 7,
-          sameSite: 'None'
-        });
+        //res.cookie('token', token, { 
+         // maxAge: 60 * 60 * 24 * 7,
+         // sameSite: 'None'
+       // });
 
         // Send response with user data
         return res.send({
           status: true,
           message: 'Correct password',
+          your_token:token,
           data: response
         });
       } else {
