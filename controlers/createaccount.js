@@ -5,7 +5,7 @@ import path from 'path';
 
 async function siginup(req,res){
 
-  const {fullName,phone,password,address}=req.body;
+  const {fullName,phone,password,user_address}=req.body;
   console.log(req)
   let profileURL='https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png';
 
@@ -47,7 +47,7 @@ async function siginup(req,res){
       phone_number:phone,
       password:password,
       imageURL:profileURL,
-      address:address
+      address:user_address
     })
 
     try {
