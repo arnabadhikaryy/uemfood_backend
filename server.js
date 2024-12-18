@@ -10,7 +10,7 @@ import PRODUCTION_router from './routes/productionRoute.js'
 import PAYMENT_router from './routes/payment.js'
 const app = express()
 app.use(cors({
-  origin:'https://musical-druid-b3fc0d.netlify.app',
+  origin: ['https://musical-druid-b3fc0d.netlify.app', 'http://localhost:5173'],
   credentials:true
 }));
 app.use(express.json());
