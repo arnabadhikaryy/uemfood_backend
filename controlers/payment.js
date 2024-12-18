@@ -1,3 +1,6 @@
+const BACKEND_url='https://uemfood1-zbh1xxkp.b4a.run';
+const FRONTEND_url='https://musical-druid-b3fc0d.netlify.app';
+
 import { generatedTranscId } from "../static/generatedTranscId.js";
 import axios from "axios";
 import crypto from "crypto";
@@ -16,12 +19,12 @@ let userID='';
 // const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay"
 // const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status"
 
-const MERCHANT_BASE_URL="https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"
+const MERCHANT_BASE_URL="https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
 
-const redirectUrl="http://localhost:3000/api/v1/orders/Payment-response"
+const redirectUrl=`${BACKEND_url}/api/v1/orders/Payment-response`;
 
-const successUrl="http://localhost:5173/food/order"
-const failureUrl="https://localhost:5173"
+const successUrl=`${FRONTEND_url}/food/order`;
+const failureUrl=FRONTEND_url;
 
 
 async function PAY(req, res) {
