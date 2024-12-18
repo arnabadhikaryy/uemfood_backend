@@ -23,7 +23,8 @@ const MERCHANT_BASE_URL="https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/p
 
 const redirectUrl=`${BACKEND_url}/api/v1/orders/Payment-response`;
 
-const successUrl=`${FRONTEND_url}/food/order`;
+//const successUrl=`${FRONTEND_url}/food/order`;
+const successUrl=`${FRONTEND_url}`;
 const failureUrl=FRONTEND_url;
 
 
