@@ -20,7 +20,7 @@ async function siginup(req,res){
     cloudinary.config({ 
       cloud_name: process.env.CLOUDENAME , 
       api_key: process.env.API_KEY, 
-      api_secret: process.env.CLOUDAPIKEY // Click 'View API Keys' above to copy your API secret
+      api_secret: process.env.API__SECRET // Click 'View API Keys' above to copy your API secret
   });
 
   // Upload an image
