@@ -9,10 +9,7 @@ import USER_router from './routes/userRout.js'
 import PRODUCTION_router from './routes/productionRoute.js'
 import PAYMENT_router from './routes/payment.js'
 const app = express()
-app.use(cors({
-  origin: ['https://musical-druid-b3fc0d.netlify.app', 'http://localhost:5173'],
-  credentials:true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 const port = process.env.PORT
