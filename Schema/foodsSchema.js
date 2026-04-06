@@ -5,8 +5,17 @@ const foodSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true,
+        default: 'Experience the authentic taste prepared with premium ingredients. Perfect for a delightful meal.'
+    },
     pic_url: {
         type: String
+    },
+    availability: {
+        type: Boolean,
+        default: true
     },
     price: {
         type: Number,

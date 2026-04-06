@@ -1,11 +1,14 @@
 import User from "../Schema/userSchema.js";
 
 async function order(req, res) {
-    const { user_phome_number, orderID } = req.body;
+    const { user_phome_number = req.JsonUserInfo.phone , orderID } = req.body;
 
     // Check if both user_phome_number and orderID are provided
-    if (!user_phome_number || !orderID) {
-        return res.send({ status: false, message: 'Missing phone number or order ID' });
+    if (!user_phome_number ) {
+        return res.send({ status: false, message: 'Missing phone number' });
+    }
+       if ( !orderID) {
+        return res.send({ status: false, message: 'Missing order ID' });
     }
 
     try {

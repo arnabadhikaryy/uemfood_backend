@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 // Middleware to authenticate JWT
 function authenticateJWT(req, res, next) {
-    console.log(req.body);
+    console.log('body in authinticateToken.js ',req.body);
   const token = req.body.token; // Expecting 'Bearer <token>'
 
   if (!token) {

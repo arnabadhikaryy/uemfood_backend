@@ -4,6 +4,8 @@ import multer from "multer";
 import { login } from '../controlers/login.js';
 import authenticateJWT from '../middleware/authinticateToken.js';
 import { profile } from '../controlers/profile.js';
+import { editUserBasicDetails } from '../controlers/editprofile.js';
+import { removeOrderFromUser } from '../controlers/deleteUsersOrder.js';
 const upload = multer({ dest: 'uploads' })
 
 const USER_router = express.Router();
@@ -24,5 +26,7 @@ USER_router.get('/102', (req, res) => {
 USER_router.post('/siginup',upload.single('avatar'),siginup)
 USER_router.post('/login',login)
 USER_router.post('/profile',authenticateJWT,profile);
+USER_router.post('/editprofile',upload.single('avatar'),authenticateJWT,editUserBasicDetails);
+USER_router.post('/remove/order',authenticateJWT,removeOrderFromUser);
 
 export default USER_router;
