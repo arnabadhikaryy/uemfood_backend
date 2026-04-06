@@ -16,7 +16,7 @@ console.log('phone number is [myAllOrders]',phone_number)
       .populate({
         path: 'orders',          // Specify the field to populate (the 'orders' field in User)
         model: foodsmodel,       // Specify the model to populate (foodsmodel)
-        select: 'title price pic_url' // Select which fields to return from foodsmodel
+       // select: 'title price pic_url' // Select which fields to return from foodsmodel
       }); 
 
     if (!user) {

@@ -8,7 +8,14 @@ import cookieParser from 'cookie-parser'
 import USER_router from './routes/userRout.js'
 import PRODUCTION_router from './routes/productionRoute.js'
 import PAYMENT_router from './routes/payment.js'
-const app = express()
+import whatsappClient from './controlers/whatsappClient.js'
+const app = express();
+// Initialize the WhatsApp client when the server boots up
+whatsappClient.initialize().then(() => {
+  console.log('WhatsApp Client initialized');
+}).catch((error) => {
+  console.error('Error initializing WhatsApp Client:', error);
+});
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
