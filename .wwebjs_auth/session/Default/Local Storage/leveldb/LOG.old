@@ -1,6 +1,0 @@
-2026/04/06-11:54:33.126 131816 Reusing MANIFEST /Users/goutammandal/Desktop/all_my_project/uemfood/backend/uemfood_backend/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
-2026/04/06-11:54:33.128 131816 Recovering log #3
-2026/04/06-11:54:33.129 131816 Reusing old log /Users/goutammandal/Desktop/all_my_project/uemfood/backend/uemfood_backend/.wwebjs_auth/session/Default/Local Storage/leveldb/000003.log 
-2026/04/06-12:04:40.871 131819 Level-0 table #5: started
-2026/04/06-12:04:40.884 131819 Level-0 table #5: 16497 bytes OK
-2026/04/06-12:04:40.887 131819 Delete type=0 #3

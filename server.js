@@ -11,11 +11,12 @@ import PAYMENT_router from './routes/payment.js'
 import whatsappClient from './controlers/whatsappClient.js'
 const app = express();
 // Initialize the WhatsApp client when the server boots up
-whatsappClient.initialize().then(() => {
-  console.log('WhatsApp Client initialized');
-}).catch((error) => {
-  console.error('Error initializing WhatsApp Client:', error);
-});
+
+// whatsappClient.initialize().then(() => {
+//   console.log('WhatsApp Client initialized');
+// }).catch((error) => {
+//   console.error('Error initializing WhatsApp Client:', error);
+// });
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
