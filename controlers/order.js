@@ -53,7 +53,7 @@ async function order(req, res) {
                     body: alertMessage,
                     to: 'whatsapp:+917365075168'
                 });
-                console.log("WhatsApp message sent:", message.sid);
+              //  console.log("WhatsApp message sent:", message.sid);
             } catch (twilioError) {
                 console.error("Failed to send WhatsApp alert:", twilioError);
             }

@@ -7,7 +7,7 @@ async function addfood(req, res) {
   const { title, price } = req.body;
   let foodURL = '';
 
-  console.log(req.body); // Log request body for debugging
+ // console.log(req.body); // Log request body for debugging
 
   // Check for missing title or price
   if (!title || !price) {
@@ -17,7 +17,7 @@ async function addfood(req, res) {
   try {
     // If a file is uploaded, handle Cloudinary upload
     if (req.file) {
-      console.log('File received:', req.file);
+    //  console.log('File received:', req.file);
 
       // Configure Cloudinary
       cloudinary.config({
@@ -34,7 +34,7 @@ async function addfood(req, res) {
         crop: 'fill'  // Ensure the image is cropped to fit the dimensions
       });
 
-      console.log('Cloudinary upload result:', uploadResult);
+     // console.log('Cloudinary upload result:', uploadResult);
       foodURL = uploadResult.secure_url; // Get the URL of the uploaded image
     }
 

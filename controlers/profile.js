@@ -3,7 +3,7 @@
 import User from "../Schema/userSchema.js";
 
 async function profile(req,res){
-    console.log('middelware details: ', req.JsonUserInfo)
+   // console.log('middelware details: ', req.JsonUserInfo)
 
     try {
         // Find user by ID from the token

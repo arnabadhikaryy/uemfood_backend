@@ -6,7 +6,7 @@ import path from 'path';
 async function siginup(req,res){
 
   const {fullName,phone,password,user_address}=req.body;
-  console.log(req)
+ // console.log(req)
   let profileURL='https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png';
 
   if(!fullName || !phone || !password ){
@@ -14,7 +14,7 @@ async function siginup(req,res){
   }
   else{
     if(req.file){
-      console.log(req.file)
+   //   console.log(req.file)
 
       // Configuration
     cloudinary.config({ 
@@ -33,7 +33,7 @@ async function siginup(req,res){
           height:250
       }
   )
-  console.log('uploadResult is:_ ',uploadResult);
+  //console.log('uploadResult is:_ ',uploadResult);
   profileURL=uploadResult.secure_url;  
   }
   catch(error) {

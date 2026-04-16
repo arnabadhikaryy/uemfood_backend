@@ -2,9 +2,9 @@ import User from "../Schema/userSchema.js";
 import foodsmodel from "../Schema/foodsSchema.js";  // Import foodsmodel to populate the orders
 
 async function myAllOrders(req, res) {
-  console.log(req.JsonUserInfo.phone)
+ // console.log(req.JsonUserInfo.phone)
   let phone_number = req.JsonUserInfo.phone;
-console.log('phone number is [myAllOrders]',phone_number)
+//console.log('phone number is [myAllOrders]',phone_number)
   // Check if phone_number is provided
   if (!phone_number) {
     return res.send({ status: false, message: 'Phone number is required' });
