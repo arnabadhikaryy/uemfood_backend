@@ -1,5 +1,6 @@
 import foodsmodel from "../Schema/foodsSchema.js"; // Adjust the path
 import cloudinary from 'cloudinary'; // Make sure you import Cloudinary!
+import redisClient from "./radisClient.js";
 
 export const editFoodItem = async (req, res) => {
     try {
@@ -63,7 +64,11 @@ export const editFoodItem = async (req, res) => {
             });
         }
 
-        // 5. Return success
+        // 5. INVALIDATE CACHE: Delete the outdated 'allFoods' cache from Redis
+        // We only do this AFTER confirming the database update was successful
+        await redisClient.del('allFoods');
+
+        // 6. Return success
         return res.status(200).json({
             success: true,
             message: "Food item updated successfully.",

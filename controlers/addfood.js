@@ -2,6 +2,7 @@ import foodsmodel from "../Schema/foodsSchema.js";
 import cloudinary from 'cloudinary';
 import multer from "multer";
 const upload = multer({ dest: 'uploads/' }); // Add trailing slash for uploads folder
+import redisClient from "./radisClient.js";
 
 async function addfood(req, res) {
   const { title, price } = req.body;
@@ -48,6 +49,10 @@ async function addfood(req, res) {
     // Save the new food item to the database
     const response = await newfood.save();
     if (response) {
+      // 2. INVALIDATE CACHE: Delete the outdated 'allFoods' cache from Redis
+      // We only do this AFTER confirming the database insertion was successful
+      await redisClient.del('allFoods');
+
       return res.send({ status: true, message: 'Food listed successfully' });
     } else {
       return res.send({ status: false, message: 'Failed to list food' });

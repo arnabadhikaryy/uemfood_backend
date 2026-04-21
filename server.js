@@ -4,44 +4,43 @@ import mongoose from 'mongoose'
 import 'dotenv/config'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+
+// Import Redis Client
+import redisClient from './controlers/radisClient.js'
+
 // Include route files
 import USER_router from './routes/userRout.js'
 import PRODUCTION_router from './routes/productionRoute.js'
 import PAYMENT_router from './routes/payment.js'
-import whatsappClient from './controlers/whatsappClient.js'
-const app = express();
-// Initialize the WhatsApp client when the server boots up
 
-// whatsappClient.initialize().then(() => {
-//   console.log('WhatsApp Client initialized');
-// }).catch((error) => {
-//   console.error('Error initializing WhatsApp Client:', error);
-// });
+const app = express();
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 const port = process.env.PORT
 
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-app.use('/user',USER_router)
-app.use('/production',PRODUCTION_router)
-app.use('/api/v1/orders',PAYMENT_router)
+
+app.use('/user', USER_router)
+app.use('/production', PRODUCTION_router)
+app.use('/api/v1/orders', PAYMENT_router)
 
 app.listen(port, async () => {
-  console.log(`Example app listening on port http://localhost:${process.env.PORT}`)
+  console.log(`Example app listening on port http://localhost:${port}`)
+  
   try {
-    const db=mongoose.connect(process.env.MONGODB);
-    if (db) {
-      console.log('database connected')
-    } else {
-      console.log('database error')
-      return
-    }
+    // Connect to MongoDB
+    await mongoose.connect(process.env.MONGODB);
+    console.log('Database connected');
+
+    // Connect to Redis
+    await redisClient.connect();
+    console.log('Redis connected');
+
   } catch (error) {
-    console.log(error)
-    return
+    console.error('Connection error:', error);
   }
 })
