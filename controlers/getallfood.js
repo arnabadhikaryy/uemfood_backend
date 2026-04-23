@@ -10,7 +10,7 @@ async function getAllFoods(req, res) {
     const cachedFoods = await redisClient.get(cacheKey);
 
     if (cachedFoods) {
-      console.log('Cache hit');
+      // console.log('Cache hit');
       // 2. Cache hit: Return parsed data immediately
       return res.send({
         status: true,
@@ -25,9 +25,14 @@ async function getAllFoods(req, res) {
     // 4. Save the result to Redis for future requests
     // .setEx(key, expiration_in_seconds, value)
     // 3600 seconds = 1 hour. Adjust this based on how often your menu changes!
-    await redisClient.setEx(cacheKey, 3600, JSON.stringify(result));
-    console.log('Cache miss, data added to cache');
 
+
+    // await redisClient.setEx(cacheKey, 3600, JSON.stringify(result));
+    //console.log('Cache miss, data added to cache');
+    // This will keep the data in Redis permanently
+    await redisClient.set(cacheKey, JSON.stringify(result));
+
+    
     // Respond with the data
     res.send({
       status: true,
