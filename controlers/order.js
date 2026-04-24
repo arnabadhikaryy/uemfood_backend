@@ -1,6 +1,50 @@
 import User from "../Schema/userSchema.js";
 import foodsmodel from "../Schema/foodsSchema.js";
-import twilio from "twilio";
+
+// Store these securely in your .env file
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
+const DELIVERY_CHAT_ID = process.env.DELIVERY_CHAT_ID;
+
+// Helper function to escape HTML characters for Telegram
+function escapeHTML(text) {
+    if (!text) return "";
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+/**
+ * Sends a message to a specific Telegram Chat ID
+ * @param {string} chatId - The ID of the user or group
+ * @param {string} message - The text message to send
+ */
+async function sendTelegramNotification(chatId, message) {
+  const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+  try {
+    const response = await fetch(telegramUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+        parse_mode: 'HTML', // Changed to HTML for stability
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!data.ok) {
+      console.error('Telegram API Error:', data.description);
+    }
+  } catch (error) {
+    console.error('Failed to send Telegram message:', error);
+  }
+}
 
 async function order(req, res) {
     const { user_phone_number = req.JsonUserInfo?.phone, orderID } = req.body;
@@ -40,23 +84,32 @@ async function order(req, res) {
         );
 
         if (result.modifiedCount > 0) {
-            const accountSid = process.env.accountSid; 
-            const authToken = process.env.authToken;
             
-            const client = twilio(accountSid, authToken);
-
+            // ---------------------------------------------------------
+            // TELEGRAM NOTIFICATION LOGIC (HTML BASED)
+            // ---------------------------------------------------------
             try {
-                const alertMessage = `*New Order Placed!* 🍔\n\n*Customer Details:*\nName: ${user_name}\nPhone: ${user_phone}\nAddress: ${user_address}\nProfile Pic: ${user_image}\n\n*Order Details:*\nItem: ${order_title}\nPrice: ${order_price}\nAvailability: ${order_availability}\nItem Pic: ${order_image}\nDescription: ${order_description}`;
-
-                const message = await client.messages.create({
-                    from: 'whatsapp:+14155238886',
-                    body: alertMessage,
-                    to: 'whatsapp:+917365075168'
-                });
-              //  console.log("WhatsApp message sent:", message.sid);
-            } catch (twilioError) {
-                console.error("Failed to send WhatsApp alert:", twilioError);
+                // Escape the dynamic data to prevent HTML parsing errors
+                const safeName = escapeHTML(user_name);
+                const safePhone = escapeHTML(user_phone);
+                const safeAddress = escapeHTML(user_address);
+                const safeTitle = escapeHTML(order_title);
+                const safeDesc = escapeHTML(order_description);
+                
+                // 1. Admin Message Template (Using HTML tags)
+                const adminMessage = `<b>🚨 New Order Placed on Hungry Baba!</b> 🍔\n\n<b>Customer Details:</b>\nName: ${safeName}\nPhone: ${safePhone}\nAddress: ${safeAddress}\nProfile Pic: ${user_image}\n\n<b>Order Details:</b>\nItem: ${safeTitle}\nPrice: ₹${order_price}\nAvailability: ${order_availability}\nDescription: ${safeDesc}\nItem Pic: ${order_image}`;
+            
+                // 2. Delivery Partner Message Template (Using HTML tags)
+                const deliveryMessage = `<b>🛵 New Delivery Assignment!</b>\n\n<b>Pickup:</b> Restaurant\n<b>Drop-off:</b> ${safeAddress}\n\n<b>Customer:</b> ${safeName} (${safePhone})\n<b>Item:</b> ${safeTitle}`;
+            
+                // 3. Fire off the notifications asynchronously 
+                await sendTelegramNotification(ADMIN_CHAT_ID, adminMessage);
+              //  await sendTelegramNotification(DELIVERY_CHAT_ID, deliveryMessage);
+                
+            } catch (telegramError) {
+                console.error("Failed to send Telegram alerts:", telegramError);
             }
+            // ---------------------------------------------------------
 
             return res.send({ status: true, message: 'Order placed successfully.' });
 
