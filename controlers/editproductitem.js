@@ -7,6 +7,9 @@ export const editFoodItem = async (req, res) => {
         // Extract _id and any other text fields from the request body
         const { _id, ...updateData } = req.body;
 
+
+        console.log("Incoming request body:", req.body);
+
         // 1. Validate that the _id was actually provided
         if (!_id) {
             return res.status(400).json({ 

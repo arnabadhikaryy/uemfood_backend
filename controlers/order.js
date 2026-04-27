@@ -47,7 +47,7 @@ async function sendTelegramNotification(chatId, message) {
 }
 
 async function order(req, res) {
-    const { user_phone_number = req.JsonUserInfo?.phone, orderID } = req.body;
+    const { user_phone_number = req.JsonUserInfo?.phone, orderID, after_discount_final_price } = req.body;
 
     if (!user_phone_number) {
         return res.send({ status: false, message: 'Missing phone number' });
@@ -97,7 +97,7 @@ async function order(req, res) {
                 const safeDesc = escapeHTML(order_description);
                 
                 // 1. Admin Message Template (Using HTML tags)
-                const adminMessage = `<b>🚨 New Order Placed on Hungry Baba!</b> 🍔\n\n<b>Customer Details:</b>\nName: ${safeName}\nPhone: ${safePhone}\nAddress: ${safeAddress}\nProfile Pic: ${user_image}\n\n<b>Order Details:</b>\nItem: ${safeTitle}\nPrice: ₹${order_price}\nAvailability: ${order_availability}\nDescription: ${safeDesc}\nItem Pic: ${order_image}`;
+                const adminMessage = `<b>🚨 New Order Placed on Hungry Baba!</b> 🍔\n\n<b>Customer Details:</b>\nName: ${safeName}\nPhone: ${safePhone}\nAddress: ${safeAddress}\nProfile Pic: ${user_image}\n\n<b>Order Details:</b>\nItem: ${safeTitle}\nPrice: ₹${order_price}\nPrice after discount: ₹${after_discount_final_price}\nAvailability: ${order_availability}\nDescription: ${safeDesc}\nItem Pic: ${order_image}`;
             
                 // 2. Delivery Partner Message Template (Using HTML tags)
                 const deliveryMessage = `<b>🛵 New Delivery Assignment!</b>\n\n<b>Pickup:</b> Restaurant\n<b>Drop-off:</b> ${safeAddress}\n\n<b>Customer:</b> ${safeName} (${safePhone})\n<b>Item:</b> ${safeTitle}`;

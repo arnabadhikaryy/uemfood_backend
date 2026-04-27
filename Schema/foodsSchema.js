@@ -20,9 +20,14 @@ const foodSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true
+    },
+    // Add the discount field here
+    discount: {
+        type: Number,
+        default: 0
     }
 })  // Optional: adds createdAt and updatedAt timestamps
 
 const foodsmodel = mongoose.model('foodelmodel', foodSchema);
 
-export default foodsmodel
+export default foodsmodel;
