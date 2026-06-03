@@ -55,6 +55,10 @@ const foodSchema = new mongoose.Schema({
     pic_url: {
         type: String
     },
+    category: {
+        type: String,
+        default: 'Food'
+    },
     availability: {
         type: Boolean,
         default: true

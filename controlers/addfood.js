@@ -1,25 +1,34 @@
 import foodsmodel from "../Schema/foodsSchema.js";
 import cloudinary from 'cloudinary';
 import multer from "multer";
-const upload = multer({ dest: 'uploads/' }); // Add trailing slash for uploads folder
+const upload = multer({ dest: 'uploads/' });
 import redisClient from "./radisClient.js";
 
 async function addfood(req, res) {
-  const { title, price } = req.body;
+  const { 
+    title, 
+    price, 
+    description, 
+    category, 
+    availability, 
+    discount, 
+    shop_name, 
+    shop_address, 
+    shop_type,
+    shop_image,
+    pic_url // Direct image URL
+  } = req.body;
+  
   let foodURL = '';
 
- // console.log(req.body); // Log request body for debugging
-
-  // Check for missing title or price
+  // Check for missing required fields
   if (!title || !price) {
-    return res.send({ status: false, message: 'Invalid price or title' });
+    return res.send({ status: false, message: 'Title and price are required fields' });
   }
 
   try {
-    // If a file is uploaded, handle Cloudinary upload
+    // Handle image: prioritize file upload, then direct URL, then default
     if (req.file) {
-    //  console.log('File received:', req.file);
-
       // Configure Cloudinary
       cloudinary.config({
         cloud_name: process.env.CLOUDENAME,
@@ -32,28 +41,41 @@ async function addfood(req, res) {
         folder: 'uemfoods',
         width: 250,
         height: 250,
-        crop: 'fill'  // Ensure the image is cropped to fit the dimensions
+        crop: 'fill'
       });
 
-     // console.log('Cloudinary upload result:', uploadResult);
-      foodURL = uploadResult.secure_url; // Get the URL of the uploaded image
+      foodURL = uploadResult.secure_url;
+    } else if (pic_url && pic_url.trim() !== '') {
+      // Use direct image URL if provided
+      foodURL = pic_url;
     }
 
-    // Create a new food item with the provided data and uploaded image URL
+    // Create new food item with all schema fields
     const newfood = new foodsmodel({
       title: title,
-      price: price,
-      pic_url: foodURL // The image URL from Cloudinary, or empty if no file uploaded
+      description: description || 'Experience the authentic taste prepared with premium ingredients. Perfect for a delightful meal.',
+      pic_url: foodURL,
+      category: category || 'Food',
+      availability: availability === 'false' ? false : true, // Handle string boolean
+      price: Number(price),
+      discount: discount ? Number(discount) : 0,
+      shop_name: shop_name || 'Hungry Baba',
+      shop_address: shop_address || 'CHANDPARA',
+      shop_type: shop_type || 'Restaurant',
+      shop_image: shop_image || 'https://img.magnific.com/premium-vector/shops-stores-icons-set-flat-design-style-vector-illustration_498048-1862.jpg?semt=ais_hybrid&w=740&q=80'
     });
 
-    // Save the new food item to the database
+    // Save to database
     const response = await newfood.save();
     if (response) {
-      // 2. INVALIDATE CACHE: Delete the outdated 'allFoods' cache from Redis
-      // We only do this AFTER confirming the database insertion was successful
+      // Invalidate cache
       await redisClient.del('allFoods');
-
-      return res.send({ status: true, message: 'Food listed successfully' });
+      
+      return res.send({ 
+        status: true, 
+        message: 'Food listed successfully',
+        data: response
+      });
     } else {
       return res.send({ status: false, message: 'Failed to list food' });
     }
