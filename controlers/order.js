@@ -47,7 +47,7 @@ async function sendTelegramNotification(chatId, message) {
 }
 
 async function order(req, res) {
-    const { user_phone_number = req.JsonUserInfo?.phone, orderID, after_discount_final_price } = req.body;
+    const { user_phone_number = req.JsonUserInfo?.phone, orderID, after_discount_final_price,quantity } = req.body;
 
     if (!user_phone_number) {
         return res.send({ status: false, message: 'Missing phone number' });
@@ -78,10 +78,21 @@ async function order(req, res) {
         let order_description = orderdetails.description;
         let order_availability = orderdetails.availability;
 
+       
         const result = await User.updateOne(
-            { phone_number: user_phone_number },
-            { $push: { orders: orderID } }
-        );
+          { phone_number: user_phone_number },
+          { 
+              $push: { 
+                  orders: {
+                      foodItem: orderID, // Maps to your schema's ObjectId reference
+                      quantity: quantity,
+                      priceAtPurchase: after_discount_final_price
+                      // status and paymentstatus will auto-populate with their defaults ('Pending')
+                  } 
+              } 
+          }
+      );
+
 
         if (result.modifiedCount > 0) {
             

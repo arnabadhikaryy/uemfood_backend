@@ -7,11 +7,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // role: {
-    //     type: String,
-    //     enum: ["customer", "admin", "delivery"],
-    //     default: "customer"
-    // },
     imageURL: {
         type: String
     },
@@ -28,10 +23,41 @@ const userSchema = new mongoose.Schema({
         type:String,
         require:true
     },
+      // NEW: Cart array to manage "Add to Cart" functionality
+      cart: [{
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'foodelmodel',
+            required: true
+        }
+    }],
     orders: [{
-        type: mongoose.Schema.Types.ObjectId, // Assuming order IDs are ObjectIDs
-        ref: 'foodsmodel' // Reference to the Order model
-    }]
+        foodItem: {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'foodelmodel',
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1,
+            default: 1
+        },
+        priceAtPurchase: {
+            type: Number,
+            default: null
+        },
+        status: {
+            type: String,
+            enum: ['Pending', 'Processing', 'out of delivery', 'Delivered', 'Cancelled'],
+            default: 'Pending'
+        },
+        paymentstatus: {
+            type: String,
+            enum: ['Pending', 'Success', 'Failed'],
+            default: 'Pending'
+        }
+    }],
 });
 
 const User = mongoose.model('User', userSchema);

@@ -17,11 +17,15 @@ export const removeOrderFromUser = async (req, res) => {
         }
 
         const index = user.orders.indexOf(orderId);
-
+        console.log('orderId is',orderId);
+      
+        console.log('index is', index);
         if (index !== -1) {
             user.orders.splice(index, 1);
             await user.save();
+            console.log(user.orders);
         }
+        console.log('One order item removed from user', user.name);
 
         return res.status(200).json({ success: true, message: "One order item removed", data: user });
 

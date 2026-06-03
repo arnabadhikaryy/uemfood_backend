@@ -10,6 +10,8 @@ import authenticateJWT from '../middleware/authinticateToken.js';
 import { editFoodItem } from '../controlers/editproductitem.js';
 import { getSingleFoodDetails } from '../controlers/singleFoodDetails.js';
 import { deleteFoodItem } from '../controlers/deleteFood.js';
+import { addFoodReview } from '../controlers/review.js';
+import { getFoodReviews } from '../controlers/get_review.js';
 const upload = multer({ dest: 'uploads' })
 
 // Define a route
@@ -33,4 +35,6 @@ PRODUCTION_router.delete('/delete/product',authenticateJWT,deleteFoodItem);
 PRODUCTION_router.get('/getUsersWithOrders',getUsersWithOrders);
 PRODUCTION_router.get('/getallfood',getAllFoods);
 PRODUCTION_router.post('/singleFoodDetails',getSingleFoodDetails);
+PRODUCTION_router.post('/food/review', upload.single('image'),addFoodReview);
+PRODUCTION_router.post('/food/all/reviews', getFoodReviews);
 export default PRODUCTION_router
