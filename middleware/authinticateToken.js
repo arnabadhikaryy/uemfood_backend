@@ -17,7 +17,7 @@ function authenticateJWT(req, res, next) {
     req.JsonUserInfo = decoded; // Attach decoded user info to the request object
     next(); // Proceed to the next middleware or route
   } catch (err) {
-    return res.status(403).json({ status: false, message: "Invalid or expired token." });
+    return res.status(403).json({ status: false, message: "Invalid or expired token. Please Login again!" });
   }
 }
 

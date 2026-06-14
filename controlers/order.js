@@ -84,10 +84,11 @@ async function order(req, res) {
           { 
               $push: { 
                   orders: {
-                      foodItem: orderID, // Maps to your schema's ObjectId reference
+                      foodItem: orderID,
+                      foodName: order_title,
+                      foodImage: order_image,
                       quantity: quantity,
                       priceAtPurchase: after_discount_final_price
-                      // status and paymentstatus will auto-populate with their defaults ('Pending')
                   } 
               } 
           }

@@ -19,7 +19,7 @@ async function login(req, res) {
       if (password == response.password) {
         // Generate JWT token
         const token = jwt.sign({
-          exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7), // Token expiry in 1 week
+          exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 60), // Token expiry in 60 days
           userId: response._id, // Store the user's ID in the token
           name:response.name,
           phone:response.phone_number,

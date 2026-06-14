@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
             ref: 'foodelmodel',
             required: true
         },
+        foodName: {
+            type: String,
+            required: true
+        },
+        foodImage: {
+            type: String,
+            required: true
+        },
         quantity: {
             type: Number,
             required: true,
