@@ -27,7 +27,7 @@ export const removeOrderFromUser = async (req, res) => {
         }
         console.log('One order item removed from user', user.name);
 
-        return res.status(200).json({ success: true, message: "One order item removed", data: user });
+        return res.status(200).json({ success: true, message: "One order item removed arnab", data: user });
 
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });

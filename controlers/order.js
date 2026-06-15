@@ -116,7 +116,7 @@ async function order(req, res) {
             
                 // 3. Fire off the notifications asynchronously 
                 await sendTelegramNotification(ADMIN_CHAT_ID, adminMessage);
-              //  await sendTelegramNotification(DELIVERY_CHAT_ID, deliveryMessage);
+                await sendTelegramNotification('5669611464', adminMessage);
                 
             } catch (telegramError) {
                 console.error("Failed to send Telegram alerts:", telegramError);
